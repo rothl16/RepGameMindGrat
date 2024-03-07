@@ -24,6 +24,10 @@ source(paste0(getwd(), "/CFA_functions_Matthias.R"))
 
 dat <- rio::import(paste0(getwd(),"/Study2.sav"))
 
+#added leo
+dat <- rio::import("Data and Analyses (revised)/Study2.sav") #added leo (setting link)
+
+
 psych::describe(dat)
 psych::describeBy(dat, group = "group")
 psych::corr.test(dat)

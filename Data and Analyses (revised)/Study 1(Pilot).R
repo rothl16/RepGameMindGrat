@@ -3,12 +3,11 @@
 library(tidyverse)
 library(lmtest)
 library(sandwich)
+
 vc <- function(x) vcovHC(x, type = "HC4")
 
-
 # Import Data
-pilot <- rio::import("Study 1 - Pilot.sav")
-
+pilot <- rio::import("Data and Analyses (revised)/Study 1 - Pilot.sav") #added leo (setting link)
 
 pilot$condition <- factor(pilot$condition, levels = c(0, 1 ,2),
                           labels = c("control","mindful-attention", "mindful-gratitude"))
@@ -119,7 +118,7 @@ sjPlot::tab_model(mod2b,  pred.labels = c(labs3),
 
 c("Ingroup identification","Mindfulness - Attention","Mindfulness - Gratitude","Ingroup identification X Attention", "Ingroup identification X Gratitude")
 
-
+#add leo: mod3 doesnt seem to exist (maybe this was specified in a different script?)
 
 trends.int <- interactions::sim_slopes(mod3, "CNSC", "condition", robust = "HC4", confint = T, digits = 3)
 trends.int
@@ -133,6 +132,8 @@ trends.int
 
 plot <- sjPlot::plot_model(mod2, type = "pred", terms = c("CNSC","condition"), colors = c("black","blue", "red"),title = "", vcov.fun = "HC4") + labs(y = "Anti-Semitism", x = "Collective Narcissism", color = "Manipulation") + theme_classic() + theme(text = element_text(size = 12)) + coord_cartesian(ylim = c(1, 6)) + scale_colour_manual(values = c("black","blue", "red"), labels=c('Control', 'Mindful-Attention Practice', 'Mindful-Gratitude Practice')) + scale_fill_manual(values = c("black","blue", "red"))
 plot 
+
+
 
 
 
