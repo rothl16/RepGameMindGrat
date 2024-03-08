@@ -31,6 +31,13 @@ dat <- rio::import("Data and Analyses (revised)/Study2.sav") #added leo (setting
 psych::describe(dat)
 psych::describeBy(dat, group = "group")
 psych::corr.test(dat)
+
+#add leo
+mean(dat$age)
+table(dat$gender)
+min(dat$age)
+max(dat$age)
+table(dat$group)
 ```
 
 # Model building
@@ -53,6 +60,7 @@ cat(pre.t1)
 ## Models
 
 ```{r}
+dat$ant_t0
 long.conf <- "
 pre.t0=~ant_t0+sexT_t0+homo_t0+PreUK_t0
 pre.t1=~ant_t1+sexT_t1+homo_t1+PreUK_t1
@@ -107,6 +115,10 @@ pre.t1~NA*1
 ```{r}
 fit.conf.long <- cfa(long.conf,data=dat, estimator="mlr")
 getFit(fit.conf.long)
+lavaan::fitmeasures(fit.conf.long,"srmr") #add leo
+lavaan::fitmeasures(fit.conf.long,"rmsea") #add leo
+lavaan::fitmeasures(fit.conf.long,"cfi") #add leo
+
 summary(fit.conf.long, standardized =TRUE, fit.measures=TRUE)
 omega2(fit.conf.long)
 
@@ -119,6 +131,8 @@ fit.sf.long <- cfa(long.sf,data=dat, estimator="mlr")
 getFit(fit.sf.long)
 summary(fit.sf.long, standardized =TRUE, fit.measures=TRUE)
 omega2(fit.sf.long)
+
+
 ```
 
 So, the longitudinal model is invariant on the scalar level. Now I will specify and test a latent change score model.
@@ -166,6 +180,9 @@ fit.lcsm <- cfa(lcsm,data=dat, estimator="mlr")
 getFit(fit.lcsm)
 summary(fit.lcsm, standardized =TRUE, fit.measures=TRUE, rsquare=TRUE)
 
+lavaan::fitmeasures(fit.lcsm,"srmr") #add leo
+lavaan::fitmeasures(fit.lcsm,"rmsea") #add leo
+lavaan::fitmeasures(fit.lcsm,"cfi") #add leo
 ```
 
 So, that model works nicely. Now, I will not split into a multiple group model (too few cases). Instead, I will regress the change score (delta) on the group variable (like a t test).
